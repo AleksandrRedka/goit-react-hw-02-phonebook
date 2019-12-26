@@ -1,0 +1,79 @@
+* {
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  padding: 40px;
+  background: rgb(47, 47, 47);
+  background-repeat: no-repeat;
+}
+
+button,
+input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+input {
+  min-width: 20vw;
+  margin-left: 30px;
+  border-radius: 5px;
+  font-size: 18px;
+  line-height: 24px;
+  color: #fff;
+  padding: 5px 15px;
+  background-color: gray;
+}
+
+input::placeholder {
+  font-size: 18px;
+  line-height: 24px;
+  color: #fff;
+}
+
+input:focus {
+  background-color: rgb(0, 38, 253);
+}
+
+h1 {
+  width: 100%;
+  font-size: 32px;
+  line-height: 40px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+li {
+  list-style-type: none;
+}
+
+.box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.searchContact {
+  width: 45%;
+}
+
+.phonebook {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+}
+
+.phonebook > h1 {
+  flex-grow: 0;
+}
