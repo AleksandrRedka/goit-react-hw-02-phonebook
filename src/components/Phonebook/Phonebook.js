@@ -1,114 +1,81 @@
-import React, { Component } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './Phonebook.module.css';
-import CreateContacts from '../CreateContacts/CreateContacts';
-import ListContacts from '../ListContacts/ListContacts';
+import Logo from '../Logo/Logo';
+import AddContacts from '../AddContacts/AddContacts';
 import SearchContact from '../SearchContact/SearchContact';
+import ListContacts from '../ListContacts/ListContacts';
+import * as searchValueSelectors from '../../redux/searchValue/searchValueSelectors';
+import * as contactsSelectors from '../../redux/contacts/contactsSelectors';
+import * as contactsActions from '../../redux/contacts/contactsActions';
 
-const filterContacts = (contacts, filter) =>
-  contacts.filter(contact =>
+const filterContacts = (contacts, filter) => {
+  return contacts.filter(contact =>
     contact.name
       .trim()
       .toLowerCase()
       .includes(filter.trim().toLowerCase()),
   );
-export default class Phonebook extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+};
 
-  componentDidMount() {
-    const locatContacts = localStorage.getItem('contacts');
-    if (locatContacts) {
-      this.setState({
-        contacts: JSON.parse(locatContacts),
-      });
+const Phonebook = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(contactsSelectors.getContacts);
+  const filter = useSelector(searchValueSelectors.getsearchValue);
+
+  useEffect(() => {
+    const localContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (localContacts) {
+      dispatch(contactsActions.fetchContact(localContacts));
     }
-  }
+  }, [dispatch]);
 
-  componentDidUpdate(prevProps, prevState) {
-    const { contacts } = this.state;
-    if (prevState.contacts !== contacts) {
-      localStorage.setItem('contacts', JSON.stringify(contacts));
-    }
-  }
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-  toastShow = (text, typeToast) => {
-    toast[typeToast](`${text}`, {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-    });
-  };
+  // handleCreateContacts = contact => {
+  //   const { contacts } = this.state;
+  //   const thisNewContact = contacts.some(
+  //     c => c.name.trim().toLowerCase() === contact.name.trim().toLowerCase(),
+  //   );
+  //   if (!thisNewContact) {
+  //     this.setState(s => ({
+  //       contacts: [...s.contacts, contact],
+  //     }));
+  //     toastShow('✅ Контакт Добавлен!', 'success');
+  //   } else {
+  //     toastShow('❌ Контакт с таким именем уже существует!', 'error');
+  //   }
+  // };
 
-  handleChangeInput = ({ target }) => {
-    const { name, value } = target;
-    this.setState({ [name]: value });
-  };
+  // const handleDeleteContact = id => {
+  //   dispatch(contactsOperation.deleteContacts(id));
+  //   toastShow('✅ Контакт успешно удален!', 'success');
+  // };
+  const filteredContacts = filterContacts(contacts, filter);
+  return (
+    <div className={styles.container}>
+      <Logo />
+      <AddContacts />
 
-  handleCreateContacts = contact => {
-    const { contacts } = this.state;
-    const thisNewContact = contacts.some(
-      c => c.name.trim().toLowerCase() === contact.name.trim().toLowerCase(),
-    );
-    if (!thisNewContact) {
-      this.setState(s => ({
-        contacts: [...s.contacts, contact],
-      }));
-      this.toastShow('✅ Контакт Добавлен!', 'success');
-    } else {
-      this.toastShow('❌ Контакт с таким именем уже существует!', 'error');
-    }
-  };
-
-  handleDeleteContact = id => {
-    this.setState(s => ({
-      contacts: s.contacts.filter(contact => contact.id !== id),
-    }));
-    this.toastShow('✅ Контакт успешно удален!', 'success');
-  };
-
-  render() {
-    const { contacts, filter } = this.state;
-    const filteredContacts = filterContacts(contacts, filter);
-    return (
-      <>
-        <div className={styles.createContacts}>
-          <h1>Create Contact</h1>
-          <CreateContacts
-            createContacts={this.handleCreateContacts}
-            toastShow={this.toastShow}
-          />
+      {contacts.length > 1 && (
+        <>
+          <h3>Search Contact</h3>
+          <SearchContact />
+        </>
+      )}
+      {filteredContacts.length > 0 && (
+        <div>
+          <h2>Contacts</h2>
+          <ListContacts contacts={filteredContacts} />
         </div>
-        <div className={styles.box}>
-          <div className={styles.searchContact}>
-            <h1>Search Contact</h1>
-            {contacts.length > 0 && (
-              <SearchContact
-                value={filter}
-                onChange={this.handleChangeInput}
-                filteredContacts={filteredContacts}
-                onDelete={this.handleDeleteContact}
-              />
-            )}
-          </div>
-          <div className={styles.phonebook}>
-            <h1>All Contacts</h1>
-            {contacts.length > 0 && (
-              <ListContacts
-                contacts={contacts}
-                onDelete={this.handleDeleteContact}
-              />
-            )}
-          </div>
-        </div>
-        <ToastContainer />
-      </>
-    );
-  }
-}
+      )}
+      <ToastContainer />
+    </div>
+  );
+};
+
+export default Phonebook;

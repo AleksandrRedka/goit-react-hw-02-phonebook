@@ -1,41 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import shortid from 'shortid';
-import PropTypes from 'prop-types';
-import ListContacts from '../ListContacts/ListContacts';
+import { CSSTransition } from 'react-transition-group';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './SearchContact.module.css';
+import transitionPop from '../../transition/transitionPop.module.css';
+import * as searchValueSelectors from '../../redux/searchValue/searchValueSelectors';
+import * as searchValueActions from '../../redux/searchValue/searchValueActions';
 
 const generateId = () => shortid.generate();
 
-const SearchContact = ({ value, onChange, filteredContacts, onDelete }) => {
+const SearchContact = () => {
+  const dispatch = useDispatch();
+  const [transition, setTransition] = useState(false);
+  const value = useSelector(searchValueSelectors.getsearchValue);
+  useEffect(() => setTransition(true), []);
   return (
     <>
-      <label className={styles.searchInput} htmlFor={generateId()}>
-        Find contacts by name
-        <input
-          type="text"
-          placeholder="Enter name contact"
-          name="filter"
-          value={value}
-          onChange={onChange}
-          autoComplete="off"
-        />
-      </label>
-      <h1>Result Search</h1>
-      {filteredContacts.length > 0 && (
-        <ListContacts contacts={filteredContacts} onDelete={onDelete} />
-      )}
+      <CSSTransition in={transition} timeout={500} classNames={transitionPop}>
+        <label className={styles.searchInput} htmlFor={generateId()}>
+          Find contacts by name
+          <input
+            type="text"
+            placeholder="Enter name contact"
+            name="filter"
+            value={value}
+            onChange={e =>
+              dispatch(searchValueActions.changeSearchValue(e.target.value))
+            }
+            autoComplete="off"
+          />
+        </label>
+      </CSSTransition>
     </>
   );
 };
 
-SearchContact.propTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  filteredContacts: PropTypes.arrayOf(PropTypes.shape({})),
-  onDelete: PropTypes.func.isRequired,
-};
-
-SearchContact.defaultProps = {
-  filteredContacts: [],
-};
 export default SearchContact;

@@ -1,0 +1,31 @@
+/* Применится как только элемент будет добавлен в DOM */
+.enter {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+/*
+* Применится на следующий тик после fade-enter
+* Сюда добавляем свойство transition
+*/
+.enterActive {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 500ms ease-in-out, transform 500ms ease-in-out;
+}
+
+/* Применится как только проп in получит false */
+.exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/*
+* Применится на следующий тик после fade-exit
+* Сюда добавляем свойство transition
+*/
+.exitActive {
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 500ms ease-in-out, transform 500ms ease-in-out;
+}

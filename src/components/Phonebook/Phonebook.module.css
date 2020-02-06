@@ -1,9 +1,8 @@
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', monospace;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: #fff;
   font-size: 24px;
   line-height: 30px;
 }
@@ -12,8 +11,12 @@ body {
   width: 100vw;
   height: 100vh;
   padding: 40px;
-  background: rgb(47, 47, 47);
   background-repeat: no-repeat;
+}
+
+label {
+  font-size: 18px;
+  line-height: 27px;
 }
 
 button,
@@ -26,54 +29,29 @@ input {
 
 input {
   min-width: 20vw;
-  margin-left: 30px;
   border-radius: 5px;
   font-size: 18px;
   line-height: 24px;
-  color: #fff;
-  padding: 5px 15px;
-  background-color: gray;
+  color: #000;
+  padding: 3px 10px;
+  margin-bottom: 20px;
+  border: 1px solid #000;
 }
 
 input::placeholder {
   font-size: 18px;
   line-height: 24px;
-  color: #fff;
+  color: rgb(156, 156, 156);
 }
 
 input:focus {
-  background-color: rgb(0, 38, 253);
-}
-
-h1 {
-  width: 100%;
-  font-size: 32px;
-  line-height: 40px;
-  margin-bottom: 15px;
-  display: flex;
-  justify-content: flex-end;
+  border: 1px solid rgb(0, 38, 253);
 }
 
 li {
   list-style-type: none;
 }
 
-.box {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.searchContact {
-  width: 45%;
-}
-
-.phonebook {
-  width: 45%;
-  display: flex;
-  flex-direction: column;
-}
-
-.phonebook > h1 {
-  flex-grow: 0;
+.container {
+  max-width: 600px;
 }
