@@ -8,11 +8,12 @@
 .formCreate button {
   border-radius: 10px;
   padding: 5px 25px;
-  background: rgb(0, 207, 0);
+  background: rgb(0, 126, 0);
   font-size: 20px;
   line-height: 24px;
   transition: 500ms;
   font-weight: 500;
+  color: #fff;
 }
 
 .formCreate button:hover {
